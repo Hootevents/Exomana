@@ -2,7 +2,7 @@
 # Mit der render_tempplate function werden die html templates zu einer webseite geformt
 from flask import Blueprint, render_template, request, flash, jsonify
 from . import db
-from .models import Note
+from .models import Note, Character
 import json
 
 from flask_login import login_required, current_user
@@ -22,14 +22,30 @@ def home():
 
     if request.method == 'POST':
         note = request.form.get('note')
-
-        if len(note) <= 1:
-            flash('Note is too short!', category='error')
-        else:
-            new_note = Note(data=note, user_id=current_user.id)
-            db.session.add(new_note)
-            db.session.commit()
-            flash('Note added!', category='success')
+        character_name = request.form.get('character_name')
+        character_splitter = request.form.get('splitter')
+        if note:
+            # Notiz hinzufügen
+            if len(note) <= 1:
+                flash('Note is too short!', category='error')
+            else:
+                new_note = Note(data=note, user_id=current_user.id)
+                db.session.add(new_note)
+                db.session.commit()
+                flash('Note added!', category='success')
+        # charakter hinzufügen
+        if character_name:
+            if len(character_name) <= 3:
+                flash('Name ist zu kurz', category='error')
+            elif 0 <= character_splitter < 1000:
+                flash('Menge an Startsplittern zu klein oder zu groß',
+                      category='error')
+            else:
+                new_character = Character(
+                    name=character_name, splitter=character_splitter, user_id=current_user.id)
+                db.session.add(new_character)
+                db.session.commit()
+                flash('Charakter hinzugefügt', category='success')
 
     # In die render_template funktion tragen wir nun einfach den Namen des zu rendernden Templates ein.
     return render_template("home.html", user=current_user)

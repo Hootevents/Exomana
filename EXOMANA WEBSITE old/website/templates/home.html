@@ -20,12 +20,42 @@
   </li>
   {% endfor %}
 </ul>
+
 <!-- Button um neue Notizen hinzuzufügen-->
 <form method="POST">
   <textarea name="note" id="note" class="form-control"></textarea>
   <br />
   <div align="center">
-    <button type="submit" class="btn btn-primary">Add Note</button>
+    <button type="submit" name="note_button" class="btn btn-primary">Add Note</button>
   </div>
 </form>
+
+<!--Alle Charakternamen und deren Splitter-->
+<h1 align="center">Charaktere</h1>
+<ul id="characters">
+  {% for character in user.charakters %}
+  <li>
+    <h3>Name:</h3>
+    {{ character.name }}
+    <h3>Splitter:</h3>
+    {{ str(character.splitter) }}
+  </li>
+  {% endfor %}
+</ul>
+
+<!--Charakter hinzufügen-->
+<form method="POST">
+  <h3>Charakter hinzufügen</h3>
+  <div>
+    <label for="character_name">Name</label>
+    <input type="text" id="character_name" placeholder="Boblin der Goblin" />
+  </div>
+  <div>
+    <label for="splitter">Splitter</label>
+    <input type="number" id="splitter" placeholder="Anzahl" />
+  </div>
+  <br />
+  <button type="submit" class="btn btn-secondary">Hinzufügen</button>
+</form>
+
 {% endblock %}

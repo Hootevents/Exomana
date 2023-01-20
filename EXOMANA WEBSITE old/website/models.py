@@ -1,7 +1,7 @@
 # Hier werden die Datenbank modelle erstellt
 # Wir wollen ein Model für die UserAccounts und eins für die Notizen erstellen
 
-#import from . bedeutet "von diesem Paket also init file"
+# import from . bedeutet "von diesem Paket also init file"
 from . import db
 # Gibt dem Benutzer ein paar eigene Attribute
 from flask_login import UserMixin
@@ -9,16 +9,27 @@ from flask_login import UserMixin
 from sqlalchemy.sql import func
 
 # Modell für unsere Notizen
+
+
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    # Notiz darf 10000 Zeichen lang sein 
+    # Notiz darf 10000 Zeichen lang sein
     data = db.Column(db.String(10000))
     # Speichert die Zeit des Erstellens der Notiz, sowie die Zeitzone
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     # Erstelle einen ForeignKey (Referenz auf andere Datenbank). Hier: wer hat die Notiz erstellt. db.ForeignKey stellt sicher, dass die id valide ist.
     # In 'user.id' steht user für die Tabelle(lower case in sql) und id für die entsprechende Spalte.
     # ForeignKey ist nur manytoOne Beziehungen
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+
+class Character(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    # Name des Charakters
+    name = db.Column(db.String(100))
+    # Splitteranzahl, die er besitzt
+    splitter = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
 # Erstelle das Modell "User" ist der Name (singular) erbt von db.Model und UserMixin
@@ -31,3 +42,5 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(150))
     # Alle Notizen, die ein Benutzer erstellt hat sollen hier auch zugreifbar sein (Upper case braucht man hier.)
     notes = db.relationship('Note')
+    # Alle Charaktere die ein Nutzer erstellt hat
+    characters = notes = db.relationship('Note')
