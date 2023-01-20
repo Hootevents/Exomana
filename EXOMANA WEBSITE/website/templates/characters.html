@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+<!-- Der Block "title" wird überschrieben -->
+{% block title %}Charaktere{% endblock %}
+
+<!-- Der Block "content" wird überschrieben -->
+{% block content %}
+
+<!-- Zeige alle Charaktere, die der Nutzer erstellt hat -->
+<h1 align="center">Charaktere</h1>
+<ul class="list-group list-group-flush" id="characters">
+  {% for character in user.characters %}
+  <li class="list-group-item">{{ character.name }} {{ character.splitter}}</li>
+  {% endfor %}
+</ul>
+
+<!-- Button um einen neuen Charakter hinzuzufügen-->
+<form method="POST">
+  <h3 align="center">Neuen Charakter hinzufügen</h3>
+  <div class="form-group">
+    <label for="character_name">Charakter Name</label>
+    <input
+      type="text"
+      class="form-control"
+      id="character_name"
+      name="character_name"
+      placeholder="Boblin der Goblin"
+    />
+  </div>
+  <div class="form-group">
+    <label for="character_splitter">Splittervorrat</label>
+    <input
+      type="number"
+      class="form-control"
+      id="character_splitter"
+      name="character_splitter"
+      placeholder="42"
+    />
+  </div>
+  <button type="submit" class="btn btn-primary">Erstellen</button>
+</form>
+{% endblock %}
